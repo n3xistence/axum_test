@@ -1,6 +1,12 @@
-use axum::response::Json;
-use serde_json::{json, Value};
+use axum::http::StatusCode;
 
-pub async fn status() -> Json<Value> {
-    Json(json!({ "status": "operational", "code": 200 }))
+pub async fn status() -> StatusCode {
+    StatusCode::OK
+}
+
+pub async fn not_implemented() -> (StatusCode, String) {
+    (
+        StatusCode::NOT_IMPLEMENTED,
+        format!("This route is not implemented yet"),
+    )
 }
