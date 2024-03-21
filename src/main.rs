@@ -1,24 +1,25 @@
-use axum::{response::Json, routing::get, Router};
-use serde_json::{json, Value};
-
 mod handlers;
 mod models;
 
-use handlers::users;
+use handlers::{default, users};
 
-async fn status() -> Json<Value> {
-    Json(json!({ "status": "operational", "code": 200 }))
-}
+use axum::{routing::get, Router};
+use dotenv::dotenv;
 
 #[tokio::main]
 async fn main() {
-    let address = String::from("0.0.0.0:3000");
+    dotenv().ok();
+
+    let address = dotenv::var("ADDRESS").unwrap();
+    let port = dotenv::var("PORT").unwrap();
+
+    let binding = format!("{}:{}", address, port);
 
     let app = Router::new()
-        .route("/", get(status))
+        .route("/", get(default::status))
         .route("/user", get(users::get_all_users))
         .route("/user/:id", get(users::get_user_by_id));
 
-    let listener = tokio::net::TcpListener::bind(address).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(binding).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }

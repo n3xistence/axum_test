@@ -1,7 +1,7 @@
 use axum::{extract::Path, http::StatusCode, response::Json};
 use serde_json::{json, Value};
 
-use crate::models::structs::User;
+use crate::models::entities::User;
 
 pub async fn get_all_users() -> Json<Value> {
     let user = User::new(String::from("Alice"), 1);
