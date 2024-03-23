@@ -1,31 +1,14 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct User {
     pub name: String,
-    pub id: u32,
+    pub id: Option<u32>,
+    pub email: String,
 }
 
 impl User {
-    pub fn new(name: String, id: u32) -> Self {
-        Self { name, id }
-    }
-}
-
-pub struct DBConfig {
-    pub url: String,
-    pub password: String,
-    pub port: String,
-    pub name: String,
-}
-
-impl DBConfig {
-    pub fn new(url: String, password: String, port: String, name: String) -> Self {
-        Self {
-            url,
-            password,
-            port,
-            name,
-        }
+    pub fn new(name: String, id: Option<u32>, email: String) -> Self {
+        Self { name, id, email }
     }
 }
